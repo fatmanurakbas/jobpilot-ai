@@ -1,4 +1,4 @@
-# 🚀 JobPilot AI
+#  JobPilot AI
 
 **JobPilot AI** is an AI-powered job application assistant designed to automate and streamline the end-to-end job application workflow while keeping critical decisions under human control.
 
