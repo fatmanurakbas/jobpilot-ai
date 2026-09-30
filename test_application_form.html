@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Job Application</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 16px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            min-height: 180px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+        }
+
+        #submission-success {
+            display: none;
+            margin-top: 25px;
+            padding: 15px;
+            border: 1px solid;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Example Tech</h1>
+    <h2>AI Engineer Intern Application</h2>
+
+    <form id="application-form">
+
+        <label for="first_name">
+            First Name
+        </label>
+
+        <input
+            id="first_name"
+            name="first_name"
+            type="text"
+            required
+        >
+
+        <label for="email">
+            Email
+        </label>
+
+        <input
+            id="email"
+            name="email"
+            type="email"
+            required
+        >
+
+        <label for="resume">
+            Resume / CV
+        </label>
+
+        <input
+            id="resume"
+            name="resume"
+            type="file"
+            accept=".pdf"
+            required
+        >
+
+        <label for="cover_letter">
+            Cover Letter
+        </label>
+
+        <textarea
+            id="cover_letter"
+            name="cover_letter"
+        ></textarea>
+
+        <label for="work_authorization">
+            Are you authorized to work?
+        </label>
+
+        <select
+            id="work_authorization"
+            name="work_authorization"
+            required
+        >
+            <option value="">
+                Select
+            </option>
+
+            <option value="yes">
+                Yes
+            </option>
+
+            <option value="no">
+                No
+            </option>
+        </select>
+
+        <button
+            id="submit-application"
+            type="submit"
+        >
+            Submit Application
+        </button>
+
+    </form>
+
+    <div id="submission-success">
+        Application submitted successfully.
+    </div>
+
+    <script>
+        const form = document.getElementById(
+            "application-form"
+        );
+
+        const successMessage = document.getElementById(
+            "submission-success"
+        );
+
+        form.addEventListener(
+            "submit",
+            function (event) {
+                event.preventDefault();
+
+                successMessage.style.display = "block";
+
+                form.setAttribute(
+                    "data-submitted",
+                    "true"
+                );
+            }
+        );
+    </script>
+
+</body>
+</html>

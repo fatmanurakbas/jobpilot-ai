@@ -1,0 +1,18 @@
+import { useEffect, useState } from "react";
+import { Activity, ArrowUpRight, CircleCheck, Clock3 } from "lucide-react";
+import { Link } from "react-router-dom";
+import api from "../services/api";
+import { usePreferences } from "../context/PreferencesContext";
+
+const labels = { SUBMITTED: "Gönderildi", SUBMISSION_UNCONFIRMED: "Gönderim doğrulanamadı", SUBMISSION_IN_PROGRESS: "Gönderim sürüyor", FORM_PREPARED: "Form hazırlandı", AWAITING_USER_REVIEW: "Kullanıcı incelemesi bekleniyor", PACKAGE_APPROVED: "Paket onaylandı", COVER_LETTER_DRAFTED: "Ön yazı hazırlandı", CV_VALIDATION_FAILED: "CV doğrulaması başarısız", MATCHED: "Eşleşme tamamlandı" };
+const dateText = (value) => value ? new Date(value).toLocaleString("tr-TR", { dateStyle: "medium", timeStyle: "short" }) : "Tarih bilgisi yok";
+
+export default function ActivityPage() {
+  const { t } = usePreferences();
+  const [applications, setApplications] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  useEffect(() => { api.get("/applications/").then(({ data }) => setApplications(Array.isArray(data) ? data : [])).catch((err) => setError(err.response?.data?.detail || "Başvuru etkinlikleri alınamadı.")).finally(() => setLoading(false)); }, []);
+  const events = applications.flatMap((app) => [{ id: `${app.id}-state`, application: app, date: app.submitted_at || app.created_at, type: app.status === "SUBMITTED" ? "submitted" : "state" }]).sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+  return <div className="workspace-page activity-page"><div className="page-heading"><div><p className="eyebrow">{t("Çalışma Alanı")}</p><h1>{t("Ajan Etkinliği")}</h1><p>{t("Başvuruların mevcut durumlarını ve kaydedilmiş zaman bilgilerini takip edin.")}</p></div><div className="activity-live"><span className="status-dot"/>{t("Güncel durumlar")}</div></div><div className="activity-disclaimer"><Activity size={17}/><span>{t("Bu ekran, başvuruların saklanan oluşturulma ve gönderilme tarihleriyle mevcut durumunu gösterir. Adım bazında geçmiş kayıtları henüz backend tarafından tutulmuyor.")}</span></div>{error && <div className="api-message error">{error}</div>}{loading && <div className="api-message">{t("Etkinlikler yükleniyor…")}</div>}{!loading && events.length === 0 && <div className="panel empty-state activity-empty"><Activity size={25}/><strong>{t("Henüz etkinlik yok")}</strong><span>{t("Bir başvuru oluşturduğunuzda güncel durumu burada görünür.")}</span><Link className="secondary-button" to="/jobs">{t("İlanlara git")}</Link></div>}{events.length > 0 && <section className="panel activity-list">{events.map(({ id, application: app, date, type }) => <article className="activity-item" key={id}><div className={`activity-marker${type === "submitted" ? " success" : ""}`}>{type === "submitted" ? <CircleCheck size={17}/> : <Clock3 size={17}/>}</div><div className="activity-item-main"><div className="activity-item-top"><div><strong>{app.position || `${t("Başvuru")} #${app.id}`}</strong><span>{app.company || t("Şirket belirtilmemiş")} · {t("Başvuru")} #{app.id}</span></div><span className="activity-date">{dateText(date)}</span></div><div className="activity-item-bottom"><span className={`activity-status${type === "submitted" ? " success" : ""}`}>{t(labels[app.status] || (app.status || "Durum bilinmiyor").replaceAll("_", " "))}</span>{app.match_percentage != null && <small>%{Math.round(app.match_percentage)} {t("eşleşme")}</small>}<Link to={`/applications?id=${app.id}`} aria-label={`${t("Başvuru")} #${app.id} ${t("akışını aç")}`}>{t("Akışı aç")} <ArrowUpRight size={14}/></Link></div></div></article>)}</section>}</div>;
+}

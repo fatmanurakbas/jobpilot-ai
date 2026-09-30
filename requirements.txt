@@ -1,0 +1,14 @@
+# Python dependencies.
+fastapi
+uvicorn[standard]
+sqlalchemy
+psycopg[binary]
+pydantic
+pydantic-settings
+python-dotenv
+openai
+python-multipart
+pypdf
+python-docx
+alembic
+playwright
