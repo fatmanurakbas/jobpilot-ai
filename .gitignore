@@ -52,3 +52,4 @@ test-results/
 
 # Local browser profile
 desktop_agent/browser-profile/
+alembic/versions_backup/
