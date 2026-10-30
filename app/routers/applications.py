@@ -109,6 +109,26 @@ def list_applications(db: Session = Depends(get_db)):
         ))
     return summaries
 
+@router.delete("/{application_id}")
+def delete_application(
+    application_id: int,
+    db: Session = Depends(get_db)
+):
+    application = db.get(Application, application_id)
+
+    if application is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Başvuru bulunamadı."
+        )
+
+    db.delete(application)
+    db.commit()
+
+    return {
+        "message": "Başvuru başarıyla silindi.",
+        "application_id": application_id
+    }
 from datetime import datetime, timezone
 from pathlib import Path
 

@@ -85,13 +85,18 @@ class DocumentGenerator:
             candidate,
         )
 
-        self._add_skills(
+        self._add_languages(
+            document,
+            candidate,
+        )
+
+        self._add_experience(
             document,
             candidate,
             tailoring_plan,
         )
-
-        self._add_experience(
+        
+        self._add_skills(
             document,
             candidate,
             tailoring_plan,
@@ -104,11 +109,6 @@ class DocumentGenerator:
         )
 
         self._add_certifications(
-            document,
-            candidate,
-        )
-
-        self._add_languages(
             document,
             candidate,
         )

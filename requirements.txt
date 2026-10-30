@@ -6,7 +6,7 @@ psycopg[binary]
 pydantic
 pydantic-settings
 python-dotenv
-openai
+openai==1.55.3
 python-multipart
 pypdf
 python-docx
